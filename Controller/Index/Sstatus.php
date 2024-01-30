@@ -118,20 +118,21 @@ class Sstatus extends \Magento\Framework\App\Action\Action
      */
     public function getSadadStatus($order)
     {
-        $serviceUrl = $this->_adapter->getSadadStatusUrl();
+        $store_id = $order->getStoreId();
+        $serviceUrl = $this->_adapter->getSadadStatusUrl($store_id);
 
         if(empty($this->_request->getParam('MerchantRefNum'))) {
             $this->_helper->doError('Merchant Reference Number does not found');
         }
 
         $merchantRefNum = $this->_request->getParam('MerchantRefNum');
-
+        
         $this->_adapter->setInfo($order, $merchantRefNum);
-        $merchantId =$this->_adapter->getMerchantId($order->getPayment());
+        $merchantId =$this->_adapter->getMerchantId($order->getPayment(),$store_id);
         $reqArray = array("transaction_no"=>$merchantRefNum, "merchant_id"=>$merchantId);
         $data = json_encode($reqArray);
         $this->_helper->setSadadHeaders($data);
-        $decodedData = $this->_helper->getCurlReqData($serviceUrl, $data);
+        $decodedData = $this->_helper->getCurlReqData($serviceUrl, $data,$store_id);
         return $decodedData;
     }
 

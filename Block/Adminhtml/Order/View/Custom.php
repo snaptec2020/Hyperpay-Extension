@@ -79,7 +79,7 @@ class Custom extends \Magento\Backend\Block\Template
         {
             $this->_messageManager->addError($e->getMessage());
             $this->_logger->critical($e->getMessage());
-            $this->_responseFactory->create()->setRedirect($this->_helperBackend->getHomePageUrl())->sendResponse();;
+            $this->_responseFactory->create()->setRedirect($this->_helperBackend->getHomePageUrl())->sendResponse();
             return;
         }
 

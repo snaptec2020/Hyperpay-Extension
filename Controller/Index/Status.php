@@ -114,18 +114,18 @@ class Status extends \Magento\Framework\App\Action\Action
      * @param $order
      * @return string
      */
-    public function getHyperpayStatus()
+    public function getHyperpayStatus($store_id = null)
     {
         if(empty($this->_request->getParam('id'))) {
             $this->_helper->doError(__('Checkout id does not found'));
         }
 
         $id = $this->_request->getParam('id');
-        $url = $this->_adapter->getUrl()."checkouts/".$id."/payment";
-        $url .= "?entityId=".$this->_adapter->getEntity($this->_request->getParam('method'));
-        $auth = array('Authorization'=>'Bearer '.$this->_adapter->getAccessToken());
+        $url = $this->_adapter->getUrl($store_id)."checkouts/".$id."/payment";
+        $url .= "?entityId=".$this->_adapter->getEntity($this->_request->getParam('method'),$store_id);
+        $auth = array('Authorization'=>'Bearer '.$this->_adapter->getAccessToken($store_id));
         $this->_helper->setHeaders($auth);
-        $decodedData = $this->_helper->getCurlRespData($url);
+        $decodedData = $this->_helper->getCurlRespData($url,$store_id);
 
         if (!isset($decodedData)) {
             $this->_helper->doError(__('No response data found'));

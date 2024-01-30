@@ -178,45 +178,45 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      *
      * @return string
      */
-    public function getStockOption()
+    public function getStockOption($store_id = null)
     {
-        return $this->_scopeConfig->getValue('cataloginventory/options/can_subtract', $this->_storeScope);
+        return $this->_scopeConfig->getValue('cataloginventory/options/can_subtract', $this->_storeScope,$store_id);
     }
     /**
      * Retrieve the server mode from configuration
      *
      * @return string
      */
-    public function getMode()
+    public function getMode($store_id = null)
     {
-        return $this->getConfigData(self::MODE);
+        return $this->getConfigData(self::MODE,$store_id);
     }
     /**
      * Retrieve Webhook key from configuration
      *
      * @return string
      */
-    public function getWebhookKey()
+    public function getWebhookKey($store_id = null)
     {
-        return $this->getConfigData(self::WEBHOOK_KEY);
+        return $this->getConfigData(self::WEBHOOK_KEY,$store_id);
     }
     /**
      * Retrieve Access token from configuration
      *
      * @return string
      */
-    public function getAccessToken()
+    public function getAccessToken($store_id = null)
     {
-        return $this->getConfigData(self::ACCESS_TOKEN);
+        return $this->getConfigData(self::ACCESS_TOKEN,$store_id);
     }
     /**
      * Retrieve risk channel id from configuration
      *
      * @return string
      */
-    public function getRiskChannelId()
+    public function getRiskChannelId($store_id = null)
     {
-        return $this->getConfigData(self::RISK_CHANNEL_ID);
+        return $this->getConfigData(self::RISK_CHANNEL_ID,$store_id);
     }
     /**
      * Retrieve the style of payment form from configuration
@@ -225,18 +225,18 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      *
      * @return string
      */
-    public function getStyle()
+    public function getStyle($store_id = null)
     {
-        return $this->getConfigData(self::STYLE);
+        return $this->getConfigData(self::STYLE,$store_id);
     }
     /**
      * Retrieve the CSS tags and attributes of payment form from configuration
      *
      * @return string
      */
-    public function getCss()
+    public function getCss($store_id = null)
     {
-        return $this->getConfigData(self::CSS);
+        return $this->getConfigData(self::CSS,$store_id);
 
     }
     /**
@@ -247,15 +247,15 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      *
      * @return string
      */
-    public function getUrl()
+    public function getUrl($store_id = null)
     {
 
-        if ($this->getMode() == "live") {
-            return $this->getConfigData(self::LIVE_URL);
+        if ($this->getMode($store_id) == "live") {
+            return $this->getConfigData(self::LIVE_URL,$store_id);
         }
         else
         {
-            return $this->getConfigData(self::TEST_URL);
+            return $this->getConfigData(self::TEST_URL,$store_id);
         }
     }
     /**
@@ -266,9 +266,9 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      *
      * @return string
      */
-    public function getConnector($method)
+    public function getConnector($method,$store_id = null)
     {
-        return $this->getConfigDataForSpecificMethod($method, self::CONNECTOR);
+        return $this->getConfigDataForSpecificMethod($method, self::CONNECTOR,$store_id);
     }
     /**
      * Retrieve the entity id from configuration
@@ -276,9 +276,9 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      * @param  $payment
      * @return string
      */
-    public function getEntity($method)
+    public function getEntity($method,$store_id = null)
     {
-        return $this->getConfigDataForSpecificMethod($method, self::ENTITY_ID);
+        return $this->getConfigDataForSpecificMethod($method, self::ENTITY_ID,$store_id);
 
     }
     /**
@@ -287,9 +287,9 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      * @param  $payment
      * @return string
      */
-    public function getPaymentType($method)
+    public function getPaymentType($method,$store_id = null)
     {
-        return $this->getConfigDataForSpecificMethod($method, self::PAYMENT_ACTION);
+        return $this->getConfigDataForSpecificMethod($method, self::PAYMENT_ACTION,$store_id);
     }
     /**
      * Retrieve the currency code depending on method code from configuration
@@ -297,18 +297,18 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      * @param  $payment
      * @return string
      */
-    public function getSupportedCurrencyCode($method)
+    public function getSupportedCurrencyCode($method,$store_id = null)
     {
-        return $this->getConfigDataForSpecificMethod($method, self::CURRENCY_CODE);
+        return $this->getConfigDataForSpecificMethod($method, self::CURRENCY_CODE,$store_id);
     }
     /**
      * Retrieve the status from configuration
      *
      * @return string
      */
-    public function getStatus()
+    public function getStatus($store_id = null)
     {
-        return $this->getConfigData(self::ORDER_STATUS);
+        return $this->getConfigData(self::ORDER_STATUS,$store_id);
 
     }
     /**
@@ -317,9 +317,9 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      * @param  $payment
      * @return string
      */
-    public function getApiUserName($method)
+    public function getApiUserName($method,$store_id = null)
     {
-        return $this->getConfigDataForSpecificMethod($method, self::API_USER_NAME);
+        return $this->getConfigDataForSpecificMethod($method, self::API_USER_NAME,$store_id);
     }
     /**
      * Retrieve the api secret for sadad depending on method code from configuration
@@ -327,9 +327,9 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      * @param  $payment
      * @return string
      */
-    public function getApiSecret($method)
+    public function getApiSecret($method,$store_id = null)
     {
-        return $this->getConfigDataForSpecificMethod($method, self::API_SECRET);
+        return $this->getConfigDataForSpecificMethod($method, self::API_SECRET,$store_id);
     }
     /**
      * Retrieve the merchant id for sadad depending on method code from configuration
@@ -337,18 +337,18 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      * @param  $payment
      * @return string
      */
-    public function getMerchantId($method)
+    public function getMerchantId($method,$store_id = null)
     {
-        return $this->getConfigDataForSpecificMethod($method, self::MERCHANT_ID);
+        return $this->getConfigDataForSpecificMethod($method, self::MERCHANT_ID,$store_id);
     }
     /**
      * Add mode to data of curl request depending on server mode
      *
      * @return string
      */
-    public function getModeHyperpay()
+    public function getModeHyperpay($store_id = null)
     {
-        if ($this->getMode() == "test") {
+        if ($this->getMode($store_id) == "test") {
             return "&testMode=EXTERNAL";
         }
     }
@@ -357,9 +357,9 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      *
      * @return boolean
      */
-    public function getEnv()
+    public function getEnv($store_id = null)
     {
-        if($this->getMode()=="live") {
+        if($this->getMode($store_id)=="live") {
             return false;
         }
 
@@ -370,9 +370,9 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      *
      * @return string
      */
-    public function getSadadReqUrl()
+    public function getSadadReqUrl($store_id = null)
     {
-        if($this->getEnv()) {
+        if($this->getEnv($store_id)) {
             return $this->_sadadRequestTestUrl;
         }
 
@@ -384,9 +384,9 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      *
      * @return string
      */
-    public function getSadadRedirectUrl()
+    public function getSadadRedirectUrl($store_id = null)
     {
-        if($this->getEnv()) {
+        if($this->getEnv($store_id)) {
             return $this->_sadadTestRedirectUrl;
         }
 
@@ -399,9 +399,9 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      *
      * @return string
      */
-    public function getSadadStatusUrl()
+    public function getSadadStatusUrl($store_id = null)
     {
-        if($this->getEnv()) {
+        if($this->getEnv($store_id)) {
             return $this->_sadadStatusTestUrl;
         }
 
@@ -414,7 +414,7 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      *
      * @return string
      */
-    public function getSadadUrl()
+    public function getSadadUrl($store_id = null)
     {
         $base = $this->_storeManager->getStore()->
         getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_WEB);
@@ -472,9 +472,10 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      */
     public function orderStatusSadad($decodedData,$order)
     {
+        $store_id = $order->getStoreId();
         if ($decodedData=="0") {
-            $order->addStatusHistoryComment('Request successfully processed', $this->getStatus());
-            $order->setState($this->getStatus());
+            $order->addStatusHistoryComment('Request successfully processed', $this->getStatus($store_id));
+            $order->setState($this->getStatus($store_id));
             $this->_orderManagement->notify($order->getEntityId());
             $order->save();
             $this->createInvoice($order);
@@ -539,9 +540,9 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      * @param  $field
      * @return string
      */
-    public function getConfigData($field)
+    public function getConfigData($field,$store_id = null)
     {
-        return $this->_scopeConfig->getValue('payment/hyperpay/'.$field, $this->_storeScope);
+        return $this->_scopeConfig->getValue('payment/hyperpay/'.$field, $this->_storeScope,$store_id);
 
     }
     /**
@@ -551,9 +552,9 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      * @param  $field
      * @return string
      */
-    public function getConfigDataForSpecificMethod($method,$field)
+    public function getConfigDataForSpecificMethod($method,$field,$store_id = null)
     {
-        return $this->_scopeConfig->getValue('payment/'.$method.'/'.$field, $this->_storeScope);
+        return $this->_scopeConfig->getValue('payment/'.$method.'/'.$field, $this->_storeScope,$store_id);
 
     }
     /**
@@ -564,13 +565,13 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
      * @param  $grandTotal
      * @return string
      */
-    public function buildCaptureOrRefundRequest($payment,$currency,$grandTotal,$op)
+    public function buildCaptureOrRefundRequest($payment,$currency,$grandTotal,$op,$store_id = null)
     {
-        $data = "entityId=".$this->getEntity($payment->getData('method')).
+        $data = "entityId=".$this->getEntity($payment->getData('method'),$store_id).
             "&currency=".$currency.
             "&amount=".$grandTotal.
             "&paymentType=".$op;
-        $data .= $this->getModeHyperpay();
+        $data .= $this->getModeHyperpay($store_id);
         return $data;
     }
     /**
@@ -583,21 +584,23 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
     {
 
         if(!$order->getId()) {
-            $order->addStatusHistoryComment('The order id is not found',$this->getStatus());
-            $order->setState(OrderStatus::STATE_PROCESSING)->setStatus($this->getStatus());
+            $store_id = 0;
+            $order->addStatusHistoryComment('The order id is not found',$this->getStatus($store_id));
+            $order->setState(OrderStatus::STATE_PROCESSING)->setStatus($this->getStatus($store_id));
             $order->save();
             return $this;
         }
 
         try {
+            $store_id = $order->getStoreId();
             $invoices = $this->_invoiceCollectionFactory->create()
                 ->addAttributeToFilter('order_id', array('eq' => $order->getId()));
 
             $invoices->getSelect()->limit(1);
 
             if ((int)$invoices->count() !== 0) {
-                $order->addStatusHistoryComment('The order has been invoiced already ',$this->getStatus());
-                $order->setState(OrderStatus::STATE_PROCESSING)->setStatus($this->getStatus());
+                $order->addStatusHistoryComment('The order has been invoiced already ',$this->getStatus($store_id));
+                $order->setState(OrderStatus::STATE_PROCESSING)->setStatus($this->getStatus($store_id));
                 $this->_orderManagement->notify($order->getEntityId());
                 $order->setEmailSent(true);
                 $order->save();
@@ -605,8 +608,8 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
             }
 
             if(!$order->canInvoice()) {
-                $order->addStatusHistoryComment('Could not create an invoice,Creating invoices is inactive',$this->getStatus());
-                $order->setState(OrderStatus::STATE_PROCESSING)->setStatus($this->getStatus());
+                $order->addStatusHistoryComment('Could not create an invoice,Creating invoices is inactive',$this->getStatus($store_id));
+                $order->setState(OrderStatus::STATE_PROCESSING)->setStatus($this->getStatus($store_id));
                 $this->_orderManagement->notify($order->getEntityId());
                 $order->setEmailSent(true);
                 $order->save();
@@ -615,8 +618,8 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
             foreach ($order->getAllItems() as $item) {
                 if($item->getProduct()->getIsVirtual())
                 {
-                    $order->addStatusHistoryComment('Could not create an invoice,The items has virtual product',$this->getStatus());
-                    $order->setState(OrderStatus::STATE_PROCESSING)->setStatus($this->getStatus());
+                    $order->addStatusHistoryComment('Could not create an invoice,The items has virtual product',$this->getStatus($store_id));
+                    $order->setState(OrderStatus::STATE_PROCESSING)->setStatus($this->getStatus($store_id));
                     $this->_orderManagement->notify($order->getEntityId());
                     $order->setEmailSent(true);
                     $order->save();
@@ -625,7 +628,7 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
             }
             $invoice = $this->_invoiceService->prepareInvoice($order);
             $code = $order->getPayment()->getData('method');
-            if ($this->getPaymentType($code) == "DB") {
+            if ($this->getPaymentType($code,$store_id) == "DB") {
                 $invoice->setRequestedCaptureCase(\Magento\Sales\Model\Order\Invoice::CAPTURE_ONLINE);
             }
             else{
@@ -637,14 +640,14 @@ class Adapter extends \Magento\Framework\Model\AbstractModel
             $order->addStatusHistoryComment('Automatically INVOICED', false);
             $transactionSave = $this->_transactionFactory->create()->addObject($invoice)->addObject($invoice->getOrder());
             $transactionSave->save();
-            $order->addStatusHistoryComment('Request successfully processed', $this->getStatus());
-            $order->setState(OrderStatus::STATE_PROCESSING)->setStatus($this->getStatus());
+            $order->addStatusHistoryComment('Request successfully processed', $this->getStatus($store_id));
+            $order->setState(OrderStatus::STATE_PROCESSING)->setStatus($this->getStatus($store_id));
             $order->save();
         } catch (\Exception $e) {
             $order->addStatusHistoryComment('Exception message: '.$e->getMessage(),
                 false);
             $this->_orderManagement->notify($order->getEntityId());
-            $order->setState(OrderStatus::STATE_PROCESSING)->setStatus($this->getStatus());
+            $order->setState(OrderStatus::STATE_PROCESSING)->setStatus($this->getStatus($store_id));
             $order->setEmailSent(true);
             $order->save();
             return null;

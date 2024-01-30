@@ -147,27 +147,27 @@ class Request extends \Magento\Framework\App\Action\Action
      */
     public function prepareTheCheckout($order, $status)
     {
-
+        $store_id = $order->getStoreId();
         $payment = $order->getPayment();
         $method = $payment->getData('method');
         $email = $order->getBillingAddress()->getEmail();
         //order#
         $orderId = $order->getIncrementId();
         $amount = $order->getBaseGrandTotal();
-        $total = $this->_helper->convertPrice($payment, $amount);
+        $total = $this->_helper->convertPrice($payment, $amount,$store_id);
 
-        if ($this->_adapter->getEnv()) {
+        if ($this->_adapter->getEnv($store_id)) {
             $grandTotal = (int)$total;
 
         } else {
             $grandTotal = number_format($total, 2, '.', '');
         }
 
-        $currency = $this->_adapter->getSupportedCurrencyCode($method);
-        $paymentType = $this->_adapter->getPaymentType($method);
+        $currency = $this->_adapter->getSupportedCurrencyCode($method,$store_id);
+        $paymentType = $this->_adapter->getPaymentType($method,$store_id);
         $this->_adapter->setPaymentTypeAndCurrency($order, $paymentType, $currency);
-        $entityId = $this->_adapter->getEntity($method);
-        $baseUrl = $this->_adapter->getUrl();
+        $entityId = $this->_adapter->getEntity($method,$store_id);
+        $baseUrl = $this->_adapter->getUrl($store_id);
         $url = $baseUrl . 'checkouts';
         $data = "entityId=" . $entityId .
             "&notificationUrl=" . $status .
@@ -177,17 +177,17 @@ class Request extends \Magento\Framework\App\Action\Action
             "&customer.email=" . $email .
             "&customParameters[plugin]=magento" .
             "&shipping.customer.email=" . $email;
-        $accesstoken = $this->_adapter->getAccessToken();
+        $accesstoken = $this->_adapter->getAccessToken($store_id);
         $auth = array('Authorization' => 'Bearer ' . $accesstoken);
         $this->_helper->setHeaders($auth);
         $data .= $this->_helper->getBillingAndShippingAddress($order);
-        if (!empty($this->_adapter->getRiskChannelId())) {
-            $data .= "&risk.channelId=" . $this->_adapter->getRiskChannelId() .
+        if (!empty($this->_adapter->getRiskChannelId($store_id))) {
+            $data .= "&risk.channelId=" . $this->_adapter->getRiskChannelId($store_id) .
                 "&risk.serviceId=I" .
                 "&risk.amount=" . $grandTotal .
                 "&risk.parameters[USER_DATA1]=Mobile";
         }
-        $data .= $this->_adapter->getModeHyperpay();
+        $data .= $this->_adapter->getModeHyperpay($store_id);
         if ($method == 'HyperPay_SadadNcb') {
             $data .= "&bankAccount.country=SA";
         }
@@ -199,7 +199,7 @@ class Request extends \Magento\Framework\App\Action\Action
             $data .= '&customParameters[bill_number]=' . $orderId;
 
         }
-        if ($this->_adapter->getEnv() && $method == 'HyperPay_ApplePay') {
+        if ($this->_adapter->getEnv($store_id) && $method == 'HyperPay_ApplePay') {
             $data .= "&customParameters[3Dsimulator.forceEnrolled]=true";
         }
 
@@ -211,11 +211,11 @@ class Request extends \Magento\Framework\App\Action\Action
         }
 
         $data .= "&merchantTransactionId=" . $orderId;
-        $decodedData = $this->_helper->getCurlReqData($url, $data);
+        $decodedData = $this->_helper->getCurlReqData($url, $data,$store_id);
         if (!isset($decodedData['id'])) {
             $this->_helper->doError(__('Request id is not found'));
         }
-        return $this->_adapter->getUrl() . "paymentWidgets.js?checkoutId=" . $decodedData['id'];
+        return $this->_adapter->getUrl($store_id) . "paymentWidgets.js?checkoutId=" . $decodedData['id'];
 
 
     }

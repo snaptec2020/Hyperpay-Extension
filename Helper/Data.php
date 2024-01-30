@@ -201,9 +201,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param  $amountValue
      * @return double
      */
-    public function convertPrice($payment, $amountValue)
+    public function convertPrice($payment, $amountValue,$store_id = null)
     {
-        $currentCurrency = $this->_adapter->getSupportedCurrencyCode($payment->getData('method'));
+        $currentCurrency = $this->_adapter->getSupportedCurrencyCode($payment->getData('method'),$store_id);
         $baseCurrency = $this->_storeManager->getStore()->getBaseCurrency()->getCode();
         if ($currentCurrency != $baseCurrency) {
             try {
@@ -247,6 +247,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $payment = $order->getPayment();
         $method = $payment->getData('method');
         $shippingAddress = $order->getShippingAddress();
+        $store_id = $order->getStoreId();
         if (isset($shippingAddress) && !empty($shippingAddress)) {
             $firstNameShipping = $order->getShippingAddress()->getFirstname();
             $surNameShipping = $order->getShippingAddress()->getLastname();
@@ -257,29 +258,29 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             $cityShipping = $order->getShippingAddress()->getCity();
             $streetShippingCompare = implode(',', $streetShipping);
 
-            if (!($this->_adapter->getConnector($method) == 'migs' && $this->isThisEnglishText($cityShipping) == false)) {
+            if (!($this->_adapter->getConnector($method,$store_id) == 'migs' && $this->isThisEnglishText($cityShipping) == false)) {
                 $data .= "&shipping.city=" . $cityShipping;
             }
 
-            if (!($this->_adapter->getConnector($method) == 'migs' && $this->isThisEnglishText($countryShipping) == false)) {
+            if (!($this->_adapter->getConnector($method,$store_id) == 'migs' && $this->isThisEnglishText($countryShipping) == false)) {
                 $data .= "&shipping.country=" . $countryShipping;
             }
 
-            if (!($this->_adapter->getConnector($method) == 'migs' && $this->isThisEnglishText($postCodeShipping) == false)) {
+            if (!($this->_adapter->getConnector($method,$store_id) == 'migs' && $this->isThisEnglishText($postCodeShipping) == false)) {
                 $data .= "&shipping.postcode=" . $postCodeShipping;
             }
-            if (!($this->_adapter->getConnector($method) == 'migs' && $this->isThisEnglishText($firstNameShipping) == false)) {
+            if (!($this->_adapter->getConnector($method,$store_id) == 'migs' && $this->isThisEnglishText($firstNameShipping) == false)) {
                 $data .= "&shipping.customer.givenName=" . $firstNameShipping;
             }
 
-            if (!($this->_adapter->getConnector($method) == 'migs' && $this->isThisEnglishText($surNameShipping) == false)) {
+            if (!($this->_adapter->getConnector($method,$store_id) == 'migs' && $this->isThisEnglishText($surNameShipping) == false)) {
                 $data .= "&shipping.customer.surname=" . $surNameShipping;
             }
 
-            if (!($this->_adapter->getConnector($method) == 'migs' && $this->isThisEnglishText($telShipping) == false)) {
+            if (!($this->_adapter->getConnector($method,$store_id) == 'migs' && $this->isThisEnglishText($telShipping) == false)) {
                 $data .= "&shipping.customer.phone=" . $telShipping;
             }
-            if (!($this->_adapter->getConnector($method) == 'migs' && $this->isThisEnglishText($streetShippingCompare) == false)) {
+            if (!($this->_adapter->getConnector($method,$store_id) == 'migs' && $this->isThisEnglishText($streetShippingCompare) == false)) {
                 $data .= $this->getStreetAddresses($streetShipping, "shipping");
             }
         }
@@ -294,32 +295,32 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $streetCompare = implode(',', $street);
 
 
-        if (!($this->_adapter->getConnector($method) == 'migs' && $this->isThisEnglishText($city) == false)) {
+        if (!($this->_adapter->getConnector($method,$store_id) == 'migs' && $this->isThisEnglishText($city) == false)) {
             $data .= "&billing.city=" . $city;
         }
 
-        if (!($this->_adapter->getConnector($method) == 'migs' && $this->isThisEnglishText($country) == false)) {
+        if (!($this->_adapter->getConnector($method,$store_id) == 'migs' && $this->isThisEnglishText($country) == false)) {
             $data .= "&billing.country=" . $country;
         }
 
-        if (!($this->_adapter->getConnector($method) == 'migs' && $this->isThisEnglishText($firsName) == false)) {
+        if (!($this->_adapter->getConnector($method,$store_id) == 'migs' && $this->isThisEnglishText($firsName) == false)) {
             $data .= "&customer.givenName=" . $firsName;
         }
 
-        if (!($this->_adapter->getConnector($method) == 'migs' && $this->isThisEnglishText($tel) == false)) {
+        if (!($this->_adapter->getConnector($method,$store_id) == 'migs' && $this->isThisEnglishText($tel) == false)) {
             $data .= "&customer.phone=" . $tel;
         }
 
-        if (!($this->_adapter->getConnector($method) == 'migs' && $this->isThisEnglishText($postCode) == false)) {
+        if (!($this->_adapter->getConnector($method,$store_id) == 'migs' && $this->isThisEnglishText($postCode) == false)) {
             $data .= "&billing.postcode=" . $postCode;
         }
 
-        if (!($this->_adapter->getConnector($method) == 'migs' && $this->isThisEnglishText($surName) == false)) {
+        if (!($this->_adapter->getConnector($method,$store_id) == 'migs' && $this->isThisEnglishText($surName) == false)) {
             $data .= "&customer.surname=" . $surName;
         }
 
 
-        if (!($this->_adapter->getConnector($method) == 'migs' && $this->isThisEnglishText($streetCompare) == false)) {
+        if (!($this->_adapter->getConnector($method,$store_id) == 'migs' && $this->isThisEnglishText($streetCompare) == false)) {
             $data .= $this->getStreetAddresses($street, "billing");
         }
 
@@ -365,9 +366,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param  $data
      * @return string
      */
-    public function getCurlReqData($url, $data)
+    public function getCurlReqData($url, $data,$store_id = null)
     {
-        $this->setCurlOptions();
+        $this->setCurlOptions($store_id);
         $this->_curlClient->setOption(CURLOPT_RETURNTRANSFER, true);
         parse_str($data, $params);
         $params = $this->replaceArrayKeys($params);
@@ -381,9 +382,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Set curl options depending on server mode
      */
-    public function setCurlOptions()
+    public function setCurlOptions($store_id = null)
     {
-        if ($this->_adapter->getEnv()) {
+        if ($this->_adapter->getEnv($store_id)) {
             $this->_curlClient->setOption(CURLOPT_SSL_VERIFYPEER, false);
             $this->_curlClient->setOption(CURLOPT_SSL_VERIFYHOST, false);
         } else {
@@ -411,9 +412,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param  $url
      * @return string
      */
-    public function getCurlRespData($url)
+    public function getCurlRespData($url,$store_id = null)
     {
-        $this->setCurlOptions();
+        $this->setCurlOptions($store_id);
         $this->_curlClient->setOption(CURLOPT_RETURNTRANSFER, true);
         $this->_curlClient->get($url);
         $response = $this->_curlClient->getBody();

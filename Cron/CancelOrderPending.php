@@ -108,13 +108,14 @@ class CancelOrderPending
 
 
                 $order_ids = [];
-                $baseUrl = $this->_adapter->getUrl();
+                
                 foreach ($orders as $order) {
-
+                    $store_id = $order->getStoreId();
+                    $baseUrl = $this->_adapter->getUrl($store_id);
                     $payment = $order->getPayment();
                     $method = $payment->getData('method');
-                    $accesstoken = $this->_adapter->getAccessToken();
-                    $entityId = $this->_adapter->getEntity($method);
+                    $accesstoken = $this->_adapter->getAccessToken($store_id);
+                    $entityId = $this->_adapter->getEntity($method,$store_id);
                     $orderId = $order->getIncrementId();
                     $url = $baseUrl . "query";
                     $url .= "?entityId=" . $entityId;

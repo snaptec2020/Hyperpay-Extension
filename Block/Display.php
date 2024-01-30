@@ -91,17 +91,17 @@ class Display extends \Magento\Framework\View\Element\Template
      *
      * @return string
      */  
-    public function getStyle()
+    public function getStyle($store_id = null)
     {
-        return $this->_adapter->getStyle();
+        return $this->_adapter->getStyle($store_id);
     }
     /**
      * Retrieve payment form css
      *
      * @return string
      */  
-    public function getCss()
+    public function getCss($store_id = null)
     {
-        return $this->_adapter->getCss();
+        return $this->_adapter->getCss($store_id);
     }
 }

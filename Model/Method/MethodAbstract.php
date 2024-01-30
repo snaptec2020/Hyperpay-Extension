@@ -106,24 +106,25 @@ abstract class MethodAbstract extends \Magento\Payment\Model\Method\AbstractMeth
     public function capture(\Magento\Payment\Model\InfoInterface $payment, $amount)
     {
         $order = $payment->getOrder();
+        $store_id = $order->getStoreId();
         if ($payment->getAdditionalInformation('payment_type') == 'PA') {
             $refId = $payment->getAdditionalInformation('checkoutId');
-            $url = $this->_adapter->getUrl()."payments/".$refId;
-            $amountVal = $this->_helper->convertPrice($payment, $amount);
-            if($this->_adapter->getEnv()) {
+            $url = $this->_adapter->getUrl($store_id)."payments/".$refId;
+            $amountVal = $this->_helper->convertPrice($payment, $amount,$store_id);
+            if($this->_adapter->getEnv($store_id)) {
                 $grandTotal = (int) $amountVal;
             }else {
                 $grandTotal=number_format($amountVal, 2, '.', '');
             }
 
             $currency = $payment->getAdditionalInformation('currency');
- 	    $auth = array('Authorization'=>'Bearer '.$this->_adapter->getAccessToken());
+ 	    $auth = array('Authorization'=>'Bearer '.$this->_adapter->getAccessToken($store_id));
             $this->_helper->setHeaders($auth);
-            $data = $this->_adapter->buildCaptureOrRefundRequest($payment,$currency, $grandTotal,"CP");
+            $data = $this->_adapter->buildCaptureOrRefundRequest($payment,$currency, $grandTotal,"CP",$store_id);
 
             try
             {
-                $result=$this->_helper->getCurlReqData($url, $data);
+                $result=$this->_helper->getCurlReqData($url, $data,$store_id);
             }
             catch (\Exception $e)
             {
@@ -160,23 +161,25 @@ abstract class MethodAbstract extends \Magento\Payment\Model\Method\AbstractMeth
         return $this;
     }
     public function refund(\Magento\Payment\Model\InfoInterface $payment, $amount)
-    {
-        $refId = $payment->getAdditionalInformation('checkoutId');
-        $url = $this->_adapter->getUrl()."payments/".$refId;
-        $amountVal = $this->_helper->convertPrice($payment, $amount);
+    {       
         $order = $payment->getOrder();
-        if($this->_adapter->getEnv()) {
+        $store_id = $order->getStoreId();
+        $refId = $payment->getAdditionalInformation('checkoutId');
+        $url = $this->_adapter->getUrl($store_id)."payments/".$refId;
+        $amountVal = $this->_helper->convertPrice($payment, $amount,$store_id);
+        
+        if($this->_adapter->getEnv($store_id)) {
             $grandTotal = (int) $amountVal;
         }else {
             $grandTotal=number_format($amountVal, 2, '.', '');
         }
         $currency = $payment->getAdditionalInformation('currency');
-	$auth = array('Authorization'=>'Bearer '.$this->_adapter->getAccessToken());
+	$auth = array('Authorization'=>'Bearer '.$this->_adapter->getAccessToken($store_id));
         $this->_helper->setHeaders($auth);
-        $data = $this->_adapter->buildCaptureOrRefundRequest($payment,$currency, $grandTotal,"RF");
+        $data = $this->_adapter->buildCaptureOrRefundRequest($payment,$currency, $grandTotal,"RF",$store_id);
         try
         {
-            $result=$this->_helper->getCurlReqData($url, $data);
+            $result=$this->_helper->getCurlReqData($url, $data,$store_id);
         }
         catch (\Exception $e)
         {

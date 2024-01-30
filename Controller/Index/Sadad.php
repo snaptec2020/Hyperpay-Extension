@@ -106,22 +106,22 @@ class Sadad extends \Magento\Framework\App\Action\Action
      */ 
     public function makeReqUsingSadad($order)
     {
-        
+        $store_id = $order->getStoreId();
         $payment= $order->getPayment();
         $amount=$order->getBaseGrandTotal();
         $orderId = str_pad($order->getIncrementId(), 20, "0", STR_PAD_LEFT);
-        $total=$this->_helper->convertPrice($payment, $amount);
-        $serviceUrl = $this->_adapter->getSadadReqUrl();
+        $total=$this->_helper->convertPrice($payment, $amount,$store_id);
+        $serviceUrl = $this->_adapter->getSadadReqUrl($store_id);
         
-        $reqArray = array("api_user_name"=>$this->_adapter->getApiUserName($payment), "api_secret"=>$this->_adapter->getApiSecret($payment), "merchant_id"=>$this->_adapter->getMerchantId($payment), "transaction_number"=>$orderId,"success_url"=>$this->_adapter->getSadadUrl(), "failure_url"=>$this->_adapter->getSadadUrl(),"lang"=>'EN',"is_testing"=>$this->_adapter->getEnv(),"amount"=>$total);
+        $reqArray = array("api_user_name"=>$this->_adapter->getApiUserName($payment,$store_id), "api_secret"=>$this->_adapter->getApiSecret($payment,$store_id), "merchant_id"=>$this->_adapter->getMerchantId($payment,$store_id), "transaction_number"=>$orderId,"success_url"=>$this->_adapter->getSadadUrl($store_id), "failure_url"=>$this->_adapter->getSadadUrl($store_id),"lang"=>'EN',"is_testing"=>$this->_adapter->getEnv($store_id),"amount"=>$total);
         $data = json_encode($reqArray);
         
         
 
         $this->_helper->setSadadHeaders($data);
-        $decodedData = $this->_helper->getCurlReqData($serviceUrl, $data);
+        $decodedData = $this->_helper->getCurlReqData($serviceUrl, $data,$store_id);
             // Redirect to PayWare checkout page
-        $stagingCheckoutUrl = $this->_adapter->getSadadRedirectUrl() . $decodedData;
+        $stagingCheckoutUrl = $this->_adapter->getSadadRedirectUrl($store_id) . $decodedData;
         return $stagingCheckoutUrl;
 
         
