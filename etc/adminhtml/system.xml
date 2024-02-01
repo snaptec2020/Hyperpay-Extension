@@ -35,6 +35,7 @@
                 <field id="test_scripturl" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1"
                        showInStore="0">
                     <label>Test Script URL</label>
+                    <config_path>payment/hyperpay/test_scripturl</config_path>
                 </field>
                 <field id="liveurl" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1"
                        showInStore="0">
@@ -43,6 +44,7 @@
                 <field id="live_scripturl" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1"
                        showInStore="0">
                     <label>Live Script URL</label>
+                    <config_path>payment/hyperpay/live_scripturl</config_path>
                 </field>
                 <field id="order_status" translate="label" type="select" sortOrder="9" showInDefault="1"
                        showInWebsite="1" showInStore="0">
@@ -198,6 +200,7 @@
                 <field id="merchant_identifier" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1"
                        showInStore="0">
                     <label>Merchant Identifier</label>
+                    <config_path>payment/HyperPay_ApplePay/merchant_identifier</config_path>
                 </field>
                 <field id="entityId" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1"
                        showInStore="0">
