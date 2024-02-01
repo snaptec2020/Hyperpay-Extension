@@ -10,11 +10,11 @@
                     <label>Mode</label>
                     <source_model>Hyperpay\Extension\Model\Source\Mode</source_model>
                 </field>
-                <field id="auth" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1"
+                <field id="auth" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1"
                        showInStore="0">
                     <label>Token</label>
                 </field>
-                <field id="webhook_key" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1"
+                <field id="webhook_key" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1"
                        showInStore="0">
                     <label>Webhook Key</label>
                 </field>
@@ -32,9 +32,17 @@
                        showInStore="0">
                     <label>Test URL</label>
                 </field>
-                <field id="liveurl" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1"
+                <field id="test_scripturl" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Test Script URL</label>
+                </field>
+                <field id="liveurl" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1"
                        showInStore="0">
                     <label>Live URL</label>
+                </field>
+                <field id="live_scripturl" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Live Script URL</label>
                 </field>
                 <field id="order_status" translate="label" type="select" sortOrder="9" showInDefault="1"
                        showInWebsite="1" showInStore="0">
@@ -186,6 +194,10 @@
                        showInStore="0">
                     <label>Connector</label>
                     <source_model>Hyperpay\Extension\Model\Source\Connectors</source_model>
+                </field>
+                <field id="merchant_identifier" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Merchant Identifier</label>
                 </field>
                 <field id="entityId" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1"
                        showInStore="0">
